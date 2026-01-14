@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "nfreconfig-mcp-server": {
+      "args": [
+        "run",
+        "cmd/server/main.go"
+      ],
+      "command": "go"
+    }
+  }
+}

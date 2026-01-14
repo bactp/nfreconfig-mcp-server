@@ -1,0 +1,22 @@
+name: nfreconfig-mcp-server
+framework: mcp-go
+version: 0.1.0
+description: MCP server built with mcp-go
+command: go run ./cmd/server/main.go
+secrets:
+    local:
+        enabled: false
+        provider: env
+        file: .env.local
+    production:
+        enabled: false
+        provider: kubernetes
+        secretName: nfreconfig-mcp-server-secrets-production
+        namespace: default
+    staging:
+        enabled: false
+        provider: kubernetes
+        secretName: nfreconfig-mcp-server-secrets-staging
+        namespace: default
+created_at: 2026-01-14T06:11:48.850289321Z
+updated_at: 2026-01-14T06:11:49.430508118Z

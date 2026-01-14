@@ -1,0 +1,26 @@
+# Go build artifacts
+/bin/
+/dist/
+*.exe
+*.out
+*.test
+*.prof
+
+# Go workspace/cache
+/vendor/
+**/vendor/
+go.work
+go.work.sum
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+
+# Logs / temp
+*.log
+/tmp/
+.cache/
