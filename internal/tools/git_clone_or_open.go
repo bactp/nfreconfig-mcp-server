@@ -25,12 +25,12 @@ type NamedRepo struct {
 }
 
 type GitCloneOrOpenManyParams struct {
-	Repos       []NamedRepo `json:"repos"`                  // required
-	Ref         string      `json:"ref,omitempty"`           // default "main"
-	Depth       int         `json:"depth,omitempty"`         // default 1
-	Pull        bool        `json:"pull,omitempty"`          // default false unless provided (set true in calls)
-	Root        string      `json:"root,omitempty"`          // default "$HOME/.cache/nfreconfig-mcp-server/git-cache"
-	Concurrency int         `json:"concurrency,omitempty"`   // default 4
+	Repos       []NamedRepo `json:"repos"`                 // required
+	Ref         string      `json:"ref,omitempty"`         // default "main"
+	Depth       int         `json:"depth,omitempty"`       // default 1
+	Pull        bool        `json:"pull,omitempty"`        // default false unless provided (set true in calls)
+	Root        string      `json:"root,omitempty"`        // default "$HOME/.cache/nfreconfig-mcp-server/git-cache"
+	Concurrency int         `json:"concurrency,omitempty"` // default 4
 }
 
 type GitRepoCloneResult struct {
@@ -53,8 +53,8 @@ type GitCloneOrOpenManyResult struct {
 
 func GitCloneOrOpenMany() MCPTool[GitCloneOrOpenManyParams, GitCloneOrOpenManyResult] {
 	return MCPTool[GitCloneOrOpenManyParams, GitCloneOrOpenManyResult]{
-		Name:        "git.clone_or_open_many",
-		Description: "Clone/open many Git repos fast (cached workdirs). Uses readable workdir names based on repo name. Returns per-repo workdir+HEAD.",
+		Name:        "[git]@git_clone_repos",
+		Description: "Clone git repositories to local workdirs. Reuses existing valid repos or clones fresh. Use before scanning/patching manifests. Returns workdir paths for each repo. Example: {\"repos\":[{\"name\":\"cucp\",\"url\":\"http://gitea.com/nephio/5g-cucp.git\",\"branch\":\"main\"}], \"baseDir\":\"/tmp/work\"}.",
 		Handler: func(ctx context.Context, cc *mcp.ServerSession, params *mcp.CallToolParamsFor[GitCloneOrOpenManyParams]) (*mcp.CallToolResultFor[GitCloneOrOpenManyResult], error) {
 			start := time.Now()
 

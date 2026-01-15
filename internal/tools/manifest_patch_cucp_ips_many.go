@@ -20,18 +20,18 @@ type IPInfo struct {
 }
 
 type PatchTarget struct {
-	Repo    string `json:"repo"`
-	Workdir string `json:"workdir"`
-	File    string `json:"file"`
-	Kind    string `json:"kind,omitempty"` // optional, but helps
-	Name    string `json:"name,omitempty"`
+	Repo      string `json:"repo"`
+	Workdir   string `json:"workdir"`
+	File      string `json:"file"`
+	Kind      string `json:"kind,omitempty"` // optional, but helps
+	Name      string `json:"name,omitempty"`
 	Namespace string `json:"namespace,omitempty"`
 }
 
 type ManifestPatchCucpIPsManyParams struct {
-	Targets  []PatchTarget       `json:"targets"`  // CUCP NFDeployment + CUCP NADs
-	NewIPs   map[string]IPInfo   `json:"newIps"`   // keys: n2,f1c,e1 (or whatever you use)
-	DryRun   bool                `json:"dryRun,omitempty"`
+	Targets []PatchTarget     `json:"targets"` // CUCP NFDeployment + CUCP NADs
+	NewIPs  map[string]IPInfo `json:"newIps"`  // keys: n2,f1c,e1 (or whatever you use)
+	DryRun  bool              `json:"dryRun,omitempty"`
 }
 
 type PatchResult struct {
@@ -47,8 +47,8 @@ type ManifestPatchCucpIPsManyResult struct {
 
 func ManifestPatchCucpIPsMany() MCPTool[ManifestPatchCucpIPsManyParams, ManifestPatchCucpIPsManyResult] {
 	return MCPTool[ManifestPatchCucpIPsManyParams, ManifestPatchCucpIPsManyResult]{
-		Name:        "manifest.patch_cucp_ips_many",
-		Description: "Patch CUCP manifests (NFDeployment + NADs) with new interface IPs/gateways. Best-effort schema tolerant.",
+		Name:        "[manifest]@patch_cucp_ips",
+		Description: "Update CUCP NFDeployment and NAD manifests with new IP allocations per interface. Use in Phase 3 to apply planned IPs to CUCP manifests. Patches address/gateway fields for each interface (n2, n3, n4, n6) including NAD spec.config JSON. Example: {\"targets\":[{\"repo\":\"cucp\",\"workdir\":\"/work/cucp\",\"file\":\"nfdeploy.yaml\",\"kind\":\"NFDeployment\"}], \"newIps\":{\"n2\":{\"address\":\"10.10.1.10/24\",\"gateway\":\"10.10.1.1\"}}}.",
 		Handler: func(ctx context.Context, cc *mcp.ServerSession, params *mcp.CallToolParamsFor[ManifestPatchCucpIPsManyParams]) (*mcp.CallToolResultFor[ManifestPatchCucpIPsManyResult], error) {
 			if len(params.Arguments.Targets) == 0 {
 				return toolErr[ManifestPatchCucpIPsManyResult](fmt.Errorf("missing required field: targets"))

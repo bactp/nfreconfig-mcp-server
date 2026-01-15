@@ -49,7 +49,7 @@ type GitCommitPushManyResult struct {
 
 func GitCommitPushMany() MCPTool[GitCommitPushManyParams, GitCommitPushManyResult] {
 	return MCPTool[GitCommitPushManyParams, GitCommitPushManyResult]{
-		Name:        "git.commit_push_many",
+		Name:        "[git]@commit_push",
 		Description: "Stage, commit (if changes), and push many repos. Supports HTTP auth using temporary GIT_ASKPASS.",
 		Handler: func(ctx context.Context, cc *mcp.ServerSession, params *mcp.CallToolParamsFor[GitCommitPushManyParams]) (*mcp.CallToolResultFor[GitCommitPushManyResult], error) {
 			start := time.Now()

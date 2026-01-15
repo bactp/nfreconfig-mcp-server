@@ -12,10 +12,10 @@ import (
 func init() { registerTool(ManifestPatchConfigRefsMany()) }
 
 type ManifestPatchConfigRefsManyParams struct {
-	Targets       []PatchTarget     `json:"targets"`       // DU/CUUP Config YAMLs (kind=Config)
-	OldNeedles    []string          `json:"oldNeedles"`    // strings to replace (e.g., old CUCP IPs/CIDRs you extracted)
-	NewRepl       map[string]string `json:"newRepl"`       // map old->new (explicit replacements)
-	DryRun        bool              `json:"dryRun,omitempty"`
+	Targets    []PatchTarget     `json:"targets"`    // DU/CUUP Config YAMLs (kind=Config)
+	OldNeedles []string          `json:"oldNeedles"` // strings to replace (e.g., old CUCP IPs/CIDRs you extracted)
+	NewRepl    map[string]string `json:"newRepl"`    // map old->new (explicit replacements)
+	DryRun     bool              `json:"dryRun,omitempty"`
 }
 
 type ManifestPatchConfigRefsManyResult struct {
@@ -24,8 +24,8 @@ type ManifestPatchConfigRefsManyResult struct {
 
 func ManifestPatchConfigRefsMany() MCPTool[ManifestPatchConfigRefsManyParams, ManifestPatchConfigRefsManyResult] {
 	return MCPTool[ManifestPatchConfigRefsManyParams, ManifestPatchConfigRefsManyResult]{
-		Name:        "manifest.patch_config_refs_many",
-		Description: "Patch DU/CUUP Config manifests by replacing old CUCP IP/CIDR strings with new ones (string-replace across all YAML string fields).",
+		Name:        "[manifest]@patch_config_refs",
+		Description: "Update DU/CUUP Config manifests that reference old CUCP IPs. Use in Phase 4 to propagate CUCP changes to dependent DU/CUUP. Performs string replacement across all YAML fields. Example: {\"targets\":[{\"repo\":\"du\",\"workdir\":\"/work/du\",\"file\":\"config.yaml\"}], \"newRepl\":{\"10.10.1.5\":\"10.10.1.10\",\"192.168.10.0/24\":\"192.168.20.0/24\"}}.",
 		Handler: func(ctx context.Context, cc *mcp.ServerSession, params *mcp.CallToolParamsFor[ManifestPatchConfigRefsManyParams]) (*mcp.CallToolResultFor[ManifestPatchConfigRefsManyResult], error) {
 			if len(params.Arguments.Targets) == 0 {
 				return toolErr[ManifestPatchConfigRefsManyResult](fmt.Errorf("missing required field: targets"))

@@ -32,7 +32,7 @@ type ArgoCDSyncAppResult struct {
 
 func ArgoCDSyncApp() MCPTool[ArgoCDSyncAppParams, ArgoCDSyncAppResult] {
 	return MCPTool[ArgoCDSyncAppParams, ArgoCDSyncAppResult]{
-		Name:        "argocd.sync_app",
+		Name:        "[argocd]@sync_app",
 		Description: "Trigger ArgoCD Application sync by patching Application.operation.sync (works without argocd CLI).",
 		Handler: func(ctx context.Context, cc *mcp.ServerSession, params *mcp.CallToolParamsFor[ArgoCDSyncAppParams]) (*mcp.CallToolResultFor[ArgoCDSyncAppResult], error) {
 			ns := strings.TrimSpace(params.Arguments.Namespace)

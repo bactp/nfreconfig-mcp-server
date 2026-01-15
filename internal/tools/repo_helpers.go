@@ -101,14 +101,29 @@ func extractAllCIDRsAndIPv4Strings(obj map[string]any) (cidrs []string, ips []st
 }
 
 // NAD.spec.config often contains JSON string; parse if possible.
-func tryParseJSONConfigString(s string) (map[string]any, bool) {
-	s = strings.TrimSpace(s)
-	if s == "" {
+func tryParseJSONConfigString(cfg string) (map[string]any, bool) {
+	cfg = strings.TrimSpace(cfg)
+	if cfg == "" {
 		return nil, false
 	}
+
+	// Some NAD config strings may include surrounding quotes if double-encoded.
+	cfg = strings.Trim(cfg, "\ufeff") // BOM safety
+	cfg = strings.TrimSpace(cfg)
+
 	var m map[string]any
-	if err := json.Unmarshal([]byte(s), &m); err != nil {
-		return nil, false
+	if err := json.Unmarshal([]byte(cfg), &m); err == nil && m != nil {
+		return m, true
 	}
-	return m, true
+
+	// Try if it's a quoted JSON string (double encoding)
+	var s string
+	if err := json.Unmarshal([]byte(cfg), &s); err == nil && strings.TrimSpace(s) != "" {
+		var m2 map[string]any
+		if err2 := json.Unmarshal([]byte(s), &m2); err2 == nil && m2 != nil {
+			return m2, true
+		}
+	}
+
+	return nil, false
 }
