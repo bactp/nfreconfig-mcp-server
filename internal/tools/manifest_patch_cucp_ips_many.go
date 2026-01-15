@@ -47,7 +47,7 @@ type ManifestPatchCucpIPsManyResult struct {
 
 func ManifestPatchCucpIPsMany() MCPTool[ManifestPatchCucpIPsManyParams, ManifestPatchCucpIPsManyResult] {
 	return MCPTool[ManifestPatchCucpIPsManyParams, ManifestPatchCucpIPsManyResult]{
-		Name:        "[manifest]@patch_cucp_ips",
+		Name:        "manifest_patch_cucp_ips",
 		Description: "Update CUCP NFDeployment and NAD manifests with new IP allocations per interface. Use in Phase 3 to apply planned IPs to CUCP manifests. Patches address/gateway fields for each interface (n2, n3, n4, n6) including NAD spec.config JSON. Example: {\"targets\":[{\"repo\":\"cucp\",\"workdir\":\"/work/cucp\",\"file\":\"nfdeploy.yaml\",\"kind\":\"NFDeployment\"}], \"newIps\":{\"n2\":{\"address\":\"10.10.1.10/24\",\"gateway\":\"10.10.1.1\"}}}.",
 		Handler: func(ctx context.Context, cc *mcp.ServerSession, params *mcp.CallToolParamsFor[ManifestPatchCucpIPsManyParams]) (*mcp.CallToolResultFor[ManifestPatchCucpIPsManyResult], error) {
 			if len(params.Arguments.Targets) == 0 {

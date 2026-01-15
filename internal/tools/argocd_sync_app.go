@@ -11,8 +11,8 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 )
 
 func init() { registerTool(ArgoCDSyncApp()) }
@@ -32,7 +32,7 @@ type ArgoCDSyncAppResult struct {
 
 func ArgoCDSyncApp() MCPTool[ArgoCDSyncAppParams, ArgoCDSyncAppResult] {
 	return MCPTool[ArgoCDSyncAppParams, ArgoCDSyncAppResult]{
-		Name:        "[argocd]@sync_app",
+		Name:        "argocd_sync_app",
 		Description: "Trigger ArgoCD Application sync by patching Application.operation.sync (works without argocd CLI).",
 		Handler: func(ctx context.Context, cc *mcp.ServerSession, params *mcp.CallToolParamsFor[ArgoCDSyncAppParams]) (*mcp.CallToolResultFor[ArgoCDSyncAppResult], error) {
 			ns := strings.TrimSpace(params.Arguments.Namespace)
@@ -69,7 +69,7 @@ func ArgoCDSyncApp() MCPTool[ArgoCDSyncAppParams, ArgoCDSyncAppResult] {
 				"metadata": map[string]any{
 					"annotations": map[string]any{
 						"nfreconfig-mcp-server/sync-at": time.Now().UTC().Format(time.RFC3339Nano),
-						"argocd.argoproj.io/refresh":     "hard",
+						"argocd.argoproj.io/refresh":    "hard",
 					},
 				},
 				"operation": map[string]any{

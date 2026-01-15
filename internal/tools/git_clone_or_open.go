@@ -53,7 +53,7 @@ type GitCloneOrOpenManyResult struct {
 
 func GitCloneOrOpenMany() MCPTool[GitCloneOrOpenManyParams, GitCloneOrOpenManyResult] {
 	return MCPTool[GitCloneOrOpenManyParams, GitCloneOrOpenManyResult]{
-		Name:        "[git]@git_clone_repos",
+		Name:        "git_clone_repos",
 		Description: "Clone git repositories to local workdirs. Reuses existing valid repos or clones fresh. Use before scanning/patching manifests. Returns workdir paths for each repo. Example: {\"repos\":[{\"name\":\"cucp\",\"url\":\"http://gitea.com/nephio/5g-cucp.git\",\"branch\":\"main\"}], \"baseDir\":\"/tmp/work\"}.",
 		Handler: func(ctx context.Context, cc *mcp.ServerSession, params *mcp.CallToolParamsFor[GitCloneOrOpenManyParams]) (*mcp.CallToolResultFor[GitCloneOrOpenManyResult], error) {
 			start := time.Now()

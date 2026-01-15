@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nfreconfig-mcp-server
+  namespace: kagent
+  labels:
+    app: nfreconfig-mcp-server
+spec:
+  type: NodePort
+  selector:
+    kagent.dev/mcp-server: nfreconfig-mcp-server
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+      # NodePort will be automatically assigned in range 30000-32767
+      # Or you can specify a specific port like: nodePort: 30080

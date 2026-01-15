@@ -24,32 +24,32 @@ type GitCommitPushTarget struct {
 }
 
 type GitCommitPushManyParams struct {
-	Targets   []GitCommitPushTarget `json:"targets"`             // required
-	Branch    string                `json:"branch,omitempty"`    // default "main"
-	Message   string                `json:"message"`             // required
-	Username  string                `json:"username,omitempty"`  // for HTTP auth
-	Password  string                `json:"password,omitempty"`  // for HTTP auth
-	Concurrency int                 `json:"concurrency,omitempty"` // default 3
+	Targets     []GitCommitPushTarget `json:"targets"`               // required
+	Branch      string                `json:"branch,omitempty"`      // default "main"
+	Message     string                `json:"message"`               // required
+	Username    string                `json:"username,omitempty"`    // for HTTP auth
+	Password    string                `json:"password,omitempty"`    // for HTTP auth
+	Concurrency int                   `json:"concurrency,omitempty"` // default 3
 }
 
 type GitCommitPushResult struct {
-	Name     string `json:"name"`
-	Workdir  string `json:"workdir"`
-	Branch   string `json:"branch"`
-	Committed bool  `json:"committed"`
-	Pushed    bool  `json:"pushed"`
+	Name      string `json:"name"`
+	Workdir   string `json:"workdir"`
+	Branch    string `json:"branch"`
+	Committed bool   `json:"committed"`
+	Pushed    bool   `json:"pushed"`
 	Head      string `json:"head,omitempty"`
 	Error     string `json:"error,omitempty"`
 }
 
 type GitCommitPushManyResult struct {
 	Results  []GitCommitPushResult `json:"results"`
-	Duration string               `json:"duration"`
+	Duration string                `json:"duration"`
 }
 
 func GitCommitPushMany() MCPTool[GitCommitPushManyParams, GitCommitPushManyResult] {
 	return MCPTool[GitCommitPushManyParams, GitCommitPushManyResult]{
-		Name:        "[git]@commit_push",
+		Name:        "git_commit_push",
 		Description: "Stage, commit (if changes), and push many repos. Supports HTTP auth using temporary GIT_ASKPASS.",
 		Handler: func(ctx context.Context, cc *mcp.ServerSession, params *mcp.CallToolParamsFor[GitCommitPushManyParams]) (*mcp.CallToolResultFor[GitCommitPushManyResult], error) {
 			start := time.Now()

@@ -36,7 +36,7 @@ type ReposGetReposURLsResult struct {
 
 func ReposGetReposURLs() MCPTool[ReposGetReposURLsParams, ReposGetReposURLsResult] {
 	return MCPTool[ReposGetReposURLsParams, ReposGetReposURLsResult]{
-		Name:        "[repos]@get_repos_urls",
+		Name:        "repos_get_repos_urls",
 		Description: "Get Git clone URLs for all repositories matching a prefix. Use to discover all 5G repos in Porch/Nephio inventory. Returns repo name, URL, and ready status. Example: {\"prefix\":\"5g-\", \"onlyReady\":true} returns all ready repos starting with '5g-'.",
 		Handler: func(ctx context.Context, cc *mcp.ServerSession, params *mcp.CallToolParamsFor[ReposGetReposURLsParams]) (*mcp.CallToolResultFor[ReposGetReposURLsResult], error) {
 			prefix := strings.TrimSpace(params.Arguments.Prefix)

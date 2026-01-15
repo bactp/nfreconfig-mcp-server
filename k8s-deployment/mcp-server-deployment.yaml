@@ -1,0 +1,12 @@
+apiVersion: kagent.dev/v1alpha1
+kind: MCPServer
+metadata:
+  name: nfreconfig-mcp-server
+  namespace: kagent
+spec:
+  deployment:
+    image: "phuongbac/nfreconfig-mcp-server:v6"
+    imagePullPolicy: Always
+    port: 8080
+    cmd: "/app/server"
+  transportType: "stdio"

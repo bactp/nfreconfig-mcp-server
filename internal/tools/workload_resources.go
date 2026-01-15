@@ -114,7 +114,7 @@ func cleanNamespace(ns string) string { return strings.TrimSpace(ns) }
 
 func WorkloadListResource() MCPTool[WorkloadResourceParams, WorkloadListResult] {
 	return MCPTool[WorkloadResourceParams, WorkloadListResult]{
-		Name:        "[workload]@list_resource",
+		Name:        "workload_list_resource",
 		Description: "List resources from a workload cluster by Kind. For namespaced resources: namespace '' or '*' lists across all namespaces.",
 		Handler: func(ctx context.Context, cc *mcp.ServerSession, params *mcp.CallToolParamsFor[WorkloadResourceParams]) (*mcp.CallToolResultFor[WorkloadListResult], error) {
 			cluster, err := requireCluster(params.Arguments.Cluster)
@@ -166,7 +166,7 @@ func WorkloadListResource() MCPTool[WorkloadResourceParams, WorkloadListResult] 
 
 func WorkloadGetResource() MCPTool[WorkloadResourceParams, WorkloadGetResult] {
 	return MCPTool[WorkloadResourceParams, WorkloadGetResult]{
-		Name:        "[workload]@get_resource",
+		Name:        "workload_get_resource",
 		Description: "Get a resource from a workload cluster by Kind. For namespaced resources, namespace is required.",
 		Handler: func(ctx context.Context, cc *mcp.ServerSession, params *mcp.CallToolParamsFor[WorkloadResourceParams]) (*mcp.CallToolResultFor[WorkloadGetResult], error) {
 			cluster, err := requireCluster(params.Arguments.Cluster)
@@ -217,7 +217,7 @@ func WorkloadGetResource() MCPTool[WorkloadResourceParams, WorkloadGetResult] {
 
 func WorkloadDeleteResource() MCPTool[WorkloadResourceParams, WorkloadDeleteResult] {
 	return MCPTool[WorkloadResourceParams, WorkloadDeleteResult]{
-		Name:        "[workload]@delete_resource",
+		Name:        "workload_delete_resource",
 		Description: "Delete a resource from a workload cluster by Kind. For namespaced resources, namespace is required.",
 		Handler: func(ctx context.Context, cc *mcp.ServerSession, params *mcp.CallToolParamsFor[WorkloadResourceParams]) (*mcp.CallToolResultFor[WorkloadDeleteResult], error) {
 			cluster, err := requireCluster(params.Arguments.Cluster)

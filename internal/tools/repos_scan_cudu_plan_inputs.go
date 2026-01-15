@@ -74,7 +74,7 @@ type RepoScanManifestsManyResult struct {
 
 func RepoScanManifestsMany() MCPTool[RepoScanManifestsManyParams, RepoScanManifestsManyResult] {
 	return MCPTool[RepoScanManifestsManyParams, RepoScanManifestsManyResult]{
-		Name:        "[repo]@scan_manifests",
+		Name:        "repo_scan_manifests",
 		Description: "Scan repository workdirs for K8s manifests (NFDeployment, NAD, NFConfig, Config). Returns file paths, object metadata, and network topology with interface-to-IP/CIDR mappings. Use to find which files to patch. Example: {\"repos\":[{\"name\":\"cucp\",\"workdir\":\"/work/cucp\"}], \"kinds\":[\"NFDeployment\",\"NetworkAttachmentDefinition\"], \"includeTopology\":true}.",
 		Handler: func(ctx context.Context, cc *mcp.ServerSession, params *mcp.CallToolParamsFor[RepoScanManifestsManyParams]) (*mcp.CallToolResultFor[RepoScanManifestsManyResult], error) {
 			repos := make([]RepoWorkdir, 0, len(params.Arguments.Repos))

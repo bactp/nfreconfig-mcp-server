@@ -24,7 +24,7 @@ type ManifestPatchConfigRefsManyResult struct {
 
 func ManifestPatchConfigRefsMany() MCPTool[ManifestPatchConfigRefsManyParams, ManifestPatchConfigRefsManyResult] {
 	return MCPTool[ManifestPatchConfigRefsManyParams, ManifestPatchConfigRefsManyResult]{
-		Name:        "[manifest]@patch_config_refs",
+		Name:        "manifest_patch_config_refs",
 		Description: "Update DU/CUUP Config manifests that reference old CUCP IPs. Use in Phase 4 to propagate CUCP changes to dependent DU/CUUP. Performs string replacement across all YAML fields. Example: {\"targets\":[{\"repo\":\"du\",\"workdir\":\"/work/du\",\"file\":\"config.yaml\"}], \"newRepl\":{\"10.10.1.5\":\"10.10.1.10\",\"192.168.10.0/24\":\"192.168.20.0/24\"}}.",
 		Handler: func(ctx context.Context, cc *mcp.ServerSession, params *mcp.CallToolParamsFor[ManifestPatchConfigRefsManyParams]) (*mcp.CallToolResultFor[ManifestPatchConfigRefsManyResult], error) {
 			if len(params.Arguments.Targets) == 0 {

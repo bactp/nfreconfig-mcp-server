@@ -11,21 +11,24 @@ import (
 
 // BuildRESTConfig returns a Kubernetes REST config.
 // Priority: in-cluster config if available; otherwise kubeconfig file.
-// If contextName == "", uses kubeconfig current-context.
+// If contextName == "", uses kubeconfig current-context or in-cluster config.
+// If contextName != "" and not "in-cluster", requires kubeconfig file.
 func BuildRESTConfig(contextName string) (*rest.Config, error) {
-	// Try in-cluster first (useful later when you deploy this server inside mgmt cluster)
-	if cfg, err := rest.InClusterConfig(); err == nil {
-		return cfg, nil
+	// If no context specified or explicitly "in-cluster", try in-cluster first
+	if contextName == "" || contextName == "in-cluster" {
+		if cfg, err := rest.InClusterConfig(); err == nil {
+			return cfg, nil
+		}
 	}
 
-	// Fall back to local kubeconfig
+	// Fall back to local kubeconfig (or required for specific contexts)
 	kubeconfig := DefaultKubeconfigPath()
 	if kubeconfig == "" {
 		return nil, fmt.Errorf("cannot determine kubeconfig path (KUBECONFIG not set and no home dir)")
 	}
 
 	overrides := &clientcmd.ConfigOverrides{}
-	if contextName != "" {
+	if contextName != "" && contextName != "in-cluster" {
 		overrides.CurrentContext = contextName
 	}
 

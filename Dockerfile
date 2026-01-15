@@ -13,6 +13,9 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o /app/server ./cmd/server
 # Final stage
 FROM alpine
 
+# Install git for cloning repositories
+RUN apk add --no-cache git
+
 WORKDIR /app
 
 COPY --from=builder /app/server /app/server

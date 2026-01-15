@@ -77,7 +77,7 @@ type ClusterScanTopologyResult struct {
 
 func ClusterScanTopology() MCPTool[ClusterScanTopologyParams, ClusterScanTopologyResult] {
 	return MCPTool[ClusterScanTopologyParams, ClusterScanTopologyResult]{
-		Name:        "[cluster]@scan_topology",
+		Name:        "cluster_scan_topology",
 		Description: "Discover clusters with their Git repositories and network topology. Use for Phase 1 discovery: find target clusters (core/edge/regional), get current IP/CIDR allocations, pod/service CIDRs, and associated git URLs. Example: {\"clusterName\":\"regional\", \"includeTopology\":true} returns cluster info with networkInterfaces (name, IPs, CIDRs), podCidrs, serviceCidrs, and gitURL.",
 		Handler: func(ctx context.Context, cc *mcp.ServerSession, params *mcp.CallToolParamsFor[ClusterScanTopologyParams]) (*mcp.CallToolResultFor[ClusterScanTopologyResult], error) {
 			clusterName := strings.TrimSpace(params.Arguments.ClusterName)
