@@ -11,7 +11,7 @@
 **/vendor/
 go.work
 go.work.sum
-
+.mmd
 # IDE
 .vscode/
 .idea/

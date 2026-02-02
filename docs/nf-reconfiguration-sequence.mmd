@@ -1,0 +1,48 @@
+sequenceDiagram
+    autonumber
+    
+    participant User
+    participant ReconfigAgent as NF Reconfiguration Agent
+    participant AssocAgent as NF Association Agent
+    participant SkillAgents as Skill Agents
+    participant MCP as MCP Tools Server
+    participant Regional as Regional Cluster
+    participant Edge as Edge Cluster
+
+    User->>ReconfigAgent: Reconfigure CUCP to Regional cluster
+    
+    loop Reasoning & Planning
+        ReconfigAgent->>ReconfigAgent: Analyze request & determine approach
+    end
+
+    ReconfigAgent->>SkillAgents: Discover topology & scan manifests
+    SkillAgents->>MCP: cluster_scan_topology, repos_get_repos_urls
+    SkillAgents->>MCP: git_clone_repos, repo_scan_manifests
+    SkillAgents-->>ReconfigAgent: Clusters, CUCP IPs, DU/CUUP refs
+
+    loop Reasoning & Planning
+        ReconfigAgent->>ReconfigAgent: Analyze topology & plan new IPs
+    end
+
+    ReconfigAgent->>SkillAgents: Patch, commit & deploy CUCP
+    SkillAgents->>MCP: manifest_patch_cucp_ips
+    SkillAgents->>MCP: git_commit_push
+    SkillAgents->>MCP: argocd_sync_app (oai-cu-cp)
+    MCP->>Regional: Deploy CUCP
+    SkillAgents-->>ReconfigAgent: CUCP deployed
+
+    ReconfigAgent->>AssocAgent: Reassociate DU/CUUP
+    
+    loop Reasoning & Planning
+        AssocAgent->>AssocAgent: Determine IP mappings for DU/CUUP
+    end
+
+    AssocAgent->>SkillAgents: Patch, commit & deploy DU/CUUP
+    SkillAgents->>MCP: manifest_patch_config_refs
+    SkillAgents->>MCP: git_commit_push
+    SkillAgents->>MCP: argocd_sync_app (oai-du, oai-cu-up)
+    MCP->>Edge: Deploy DU/CUUP
+    Edge->>Regional: F1-C, E1 reconnect
+    AssocAgent-->>ReconfigAgent: DU/CUUP reassociated
+
+    ReconfigAgent-->>User: NF Reconfiguration complete
